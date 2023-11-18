@@ -44,7 +44,18 @@
 											<td><?= $value->nilai_kepribadian ?></td>
 											<td><?= $value->hasil ?></td>
 											<td>
-												<a href="<?= base_url('Manager/cAnalisis/delete/' . $value->id_analisis)  ?>" class="btn btn-danger btn-rounded">Hapus</a>
+												<?php
+												if ($value->approved == '0') {
+												?>
+													<a href="<?= base_url('Pemilik/cAnalisis/approved/' . $value->id_analisis)  ?>" class="btn btn-warning btn-rounded">Approved</a>
+
+												<?php
+												} else {
+												?>
+													<span class="badge badge-success">Approved</span>
+												<?php
+												}
+												?>
 											</td>
 										</tr>
 									<?php

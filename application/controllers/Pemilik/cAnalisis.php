@@ -19,6 +19,16 @@ class cAnalisis extends CI_Controller
 		$this->load->view('Pemilik/vAnalisis', $data);
 		$this->load->view('Pemilik/Layout/footer');
 	}
+	public function approved($id)
+	{
+		$data = array(
+			'approved' => '1'
+		);
+		$this->db->where('id_analisis', $id);
+		$this->db->update('analisis', $data);
+		$this->session->set_flashdata('success', 'Analisis Berhasil Approved');
+		redirect('Pemilik/cAnalisis');
+	}
 	public function cetak()
 	{
 		// memanggil library FPDF
@@ -47,11 +57,14 @@ class cAnalisis extends CI_Controller
 
 		$data = $this->mAnalisis->select();
 		foreach ($data as $key => $value) {
-			$pdf->Cell(10, 6, $no++, 1, 0, 'C');
-			$pdf->Cell(50, 6, $value->nama_karyawan, 1, 0);
-			$pdf->Cell(50, 6, $value->jk, 1, 0);
-			$pdf->Cell(40, 6, $value->divisi, 1, 0);
-			$pdf->Cell(40, 6, $value->hasil, 1, 1);
+			if ($value->approved == '1') {
+
+				$pdf->Cell(10, 6, $no++, 1, 0, 'C');
+				$pdf->Cell(50, 6, $value->nama_karyawan, 1, 0);
+				$pdf->Cell(50, 6, $value->jk, 1, 0);
+				$pdf->Cell(40, 6, $value->divisi, 1, 0);
+				$pdf->Cell(40, 6, $value->hasil, 1, 1);
+			}
 		}
 		$pdf->Output();
 	}
